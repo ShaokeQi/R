@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+author: "Qi"
+date: "2023-08-29"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+# Problem 3:
+
+## 2)
+n_rolls <- 100000
+dice1 <- sample(1:7, n_rolls, replace = TRUE)
+dice2 <- sample(1:7, n_rolls, replace = TRUE)
+sums <- dice1 + dice2
+pmf <- table(sums) / n_rolls
+pmf
+
+expected_value <- mean(sums)
+expected_value
+variance <- var(sums)
+variance
+```
+

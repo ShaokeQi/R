@@ -1,0 +1,87 @@
+---
+title: "Q2"
+author: "Shaoke Qi Yi hsuan Chiang"
+date: "2023-08-17"
+output: pdf_document
+---
+```{r}
+sim <- function(p,q,nreps) {
+
+  CO<- c()
+  count<-0
+  
+  # simulate nreps repetitions of the experiment
+  for (k in 1:nreps) {
+    collisions<-NA
+    numsend1 <- 0 #initially
+
+    if (runif(1) < p) numsend1 <- numsend1 + 1
+    
+    if (numsend1 == 1){
+      X1 <- 1
+    }else{
+      X1 <- 2
+    }
+    # now simulate epoch 2
+    numactive <- X1
+    if (X1 == 1 && runif(1) < q) numactive <- numactive + 1
+    # send?
+    if (numactive == 1) {
+      if (runif(1) < p){
+        X2 <- 0
+      }else {
+        X2 <- 1
+        
+        if(X1==1&X2==1){
+          
+          collisions<- 0
+        }
+        
+      }
+      
+    } else { # numactive = 2
+      numsend2 <- 0
+      for (i in 1:2) {
+        if (runif(1) < p) {
+          numsend2 <- numsend2 + 1
+        }
+      }
+      if (numsend2 == 1){
+        X2 <- 1
+      } else{
+        X2 <- 2
+      }
+      if(X1==1&X2==1){
+        
+        collisions<- 1
+      }
+      if(X1==2&X2==2&numsend2==2){
+        
+        collisions<- 1
+      }
+      
+      
+    }
+    CO[k]<-collisions
+    
+    if(X1==X2){
+      count=count+1
+      
+    }
+    
+  }
+
+    # compute probabilities
+    prob0collisions <-sum(CO==0,na.rm=T) /  count
+    prob1collision <- sum(CO==1,na.rm=T) /  count
+    prob2collisions <- sum(CO==2,na.rm=T) /  count
+
+  
+  # return probabilities
+  return(c(prob1collision, prob0collisions, prob2collisions))
+}
+
+
+sim(0.4, 0.8, 10000)
+```
+

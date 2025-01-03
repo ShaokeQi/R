@@ -1,0 +1,41 @@
+---
+title: "Q3"
+author: "Shaoke Qi Yi hsuan Chiang"
+date: "2023-08-16"
+output: pdf_document
+---
+
+```{r}
+sim <- function(nreps) {# function
+  count2aces <- 0 # we set number of 2 aces is 0 
+  count4diamonds <- 0 # we set number of 4 diamond is 4 
+  
+  for (rep in 1:nreps) {
+    hand <- sample(1:52, 5, replace = FALSE) # it just 5/52
+    aces <- intersect(c(1, 14, 27, 40), hand) # we need to aces there only 4/53 2/4
+    diamonds <- intersect(c(1:13), hand) # find diamond 13/53
+    if (length(aces) == 2) count2aces <- count2aces + 1 #so we rep then get 2 ace at once count++
+    if (length(diamonds) == 4) count4diamonds <- count4diamonds + 1 #same with last statement if we get 4 diamond at 1 rep we count++
+  }
+  
+  p2aces <- count2aces/nreps
+  p4diamonds <- count4diamonds/nreps
+   
+  result1 <- ifelse(p2aces > p4diamonds, "P(2 aces) is larger", "P(4 diamonds) is larger")
+  return(list(result1, p2aces= p2aces,p4diamonds=p4diamonds))
+}
+
+sim(10000000) # Run 1000000 times
+
+#we can calculate 5-10 times sd
+r1=c()#for value
+r2=c()#for value
+for(i in 1:10){
+  d=sim(10000000)#just 10 times 100000
+  r1[i]=d[[2]]
+  r2[i]=d[[3]]
+}
+sd(r1)#p2aces
+sd(r2)#p4diamonds
+```
+
